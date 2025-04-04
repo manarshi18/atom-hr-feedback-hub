@@ -1,29 +1,59 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Atom HR - Feedback Hub</title>
-    <meta name="description" content="Atom HR Feedback Hub - Provide your feedback and help us improve" />
-    <meta name="author" content="Lovable" />
-
-    <meta property="og:title" content="Atom HR - Feedback Hub" />
-    <meta property="og:description" content="Atom HR Feedback Hub - Provide your feedback and help us improve" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Rating Component</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2 class="title">Employee Feedback Form</h2>
     
-    <link rel="stylesheet" href="src/index.css">
-  </head>
+    <form id="feedback-form">
+      <div class="feedback-question">
+        <label class="question-label">How satisfied are you with your work environment?</label>
+        <div class="star-rating-container" id="work-satisfaction"></div>
+      </div>
+      
+      <div class="feedback-question">
+        <label class="question-label">Rate your team collaboration experience</label>
+        <div class="star-rating-container" id="team-collaboration"></div>
+      </div>
+      
+      <div class="feedback-question">
+        <label class="question-label">How would you rate your work-life balance?</label>
+        <div class="star-rating-container" id="work-life-balance"></div>
+      </div>
+      
+      <div class="feedback-question">
+        <label class="question-label">Rate the growth opportunities provided by the company</label>
+        <div class="star-rating-container" id="growth-opportunities"></div>
+      </div>
+      
+      <div class="feedback-question">
+        <label class="question-label">How well does management support your needs?</label>
+        <div class="star-rating-container" id="management-support"></div>
+      </div>
+      
+      <div class="comment-section">
+        <label class="question-label">Additional Comments (Optional)</label>
+        <textarea id="comment" placeholder="Share your thoughts or suggestions..." rows="5"></textarea>
+      </div>
+      
+      <div class="submit-section">
+        <button type="submit" id="submit-btn">Submit Feedback</button>
+      </div>
+    </form>
+  </div>
 
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <span id="toast-message">Message here</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
