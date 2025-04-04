@@ -4,9 +4,17 @@ import { Textarea } from "@/components/ui/textarea";
 import StarRating from "@/components/StarRating";
 import { toast } from "sonner";
 
+type RatingType = {
+  workSatisfaction: number;
+  teamCollaboration: number;
+  workLifeBalance: number;
+  growthOpportunities: number;
+  managementSupport: number;
+};
+
 const FeedbackForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [ratings, setRatings] = useState({
+  const [ratings, setRatings] = useState<RatingType>({
     workSatisfaction: 0,
     teamCollaboration: 0,
     workLifeBalance: 0,
@@ -15,7 +23,7 @@ const FeedbackForm = () => {
   });
   const [comment, setComment] = useState('');
 
-  const handleRatingChange = (question: keyof typeof ratings, rating: number) => {
+  const handleRatingChange = (question: keyof RatingType, rating: number) => {
     setRatings((prev) => ({
       ...prev,
       [question]: rating
