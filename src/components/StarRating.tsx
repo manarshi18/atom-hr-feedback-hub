@@ -1,5 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
+import { Star } from 'lucide-react';
 
 interface StarRatingProps {
   onChange: (rating: number) => void;
@@ -10,43 +11,48 @@ const StarRating: React.FC<StarRatingProps> = ({ onChange, initialRating = 0 }) 
   const containerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
     
-    // Clear previous content
-    containerRef.current.innerHTML = '';
+    // Clear previous stars
+    container.innerHTML = '';
     
-    let rating = initialRating;
+    let currentRating = initialRating;
     let hoverRating = 0;
-    let stars: HTMLButtonElement[] = [];
-
-    function updateStars() {
-      for (let i = 0; i < stars.length; i++) {
-        const starIcon = stars[i].querySelector('.star-icon') as SVGElement;
-        if ((hoverRating || rating) >= parseInt(stars[i].dataset.value || '0')) {
-          starIcon.classList.add('fill-yellow-400', 'text-yellow-400');
-          starIcon.classList.remove('text-gray-300', 'dark:text-gray-600');
-        } else {
-          starIcon.classList.remove('fill-yellow-400', 'text-yellow-400');
-          starIcon.classList.add('text-gray-300', 'dark:text-gray-600');
-        }
-      }
-    }
-
-    function createStarElement(index: number) {
+    
+    // Create star container
+    const starContainer = document.createElement('div');
+    starContainer.className = 'flex';
+    container.appendChild(starContainer);
+    
+    // Create 5 stars
+    for (let i = 1; i <= 5; i++) {
       const star = document.createElement('button');
       star.type = 'button';
-      star.className = 'p-1';
-      star.dataset.value = index.toString();
-      star.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="star-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+      star.className = 'p-1 focus:outline-none';
+      star.dataset.value = i.toString();
       
+      // Star SVG
+      star.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+          class="star-icon transition-colors ${
+            (currentRating >= i) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-600'
+          }">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      `;
+      
+      // Click event
       star.addEventListener('click', () => {
-        rating = index;
-        onChange(rating);
+        currentRating = i;
+        onChange(currentRating);
         updateStars();
       });
       
+      // Hover events
       star.addEventListener('mouseenter', () => {
-        hoverRating = index;
+        hoverRating = i;
         updateStars();
       });
       
@@ -55,25 +61,31 @@ const StarRating: React.FC<StarRatingProps> = ({ onChange, initialRating = 0 }) 
         updateStars();
       });
       
-      return star;
-    }
-
-    const starContainer = document.createElement('div');
-    starContainer.className = 'flex';
-    
-    for (let i = 1; i <= 5; i++) {
-      const star = createStarElement(i);
-      stars.push(star);
       starContainer.appendChild(star);
     }
     
-    containerRef.current.appendChild(starContainer);
-    updateStars();
-
-    // Clean up
+    // Function to update star appearance
+    function updateStars() {
+      const stars = starContainer.querySelectorAll('button');
+      stars.forEach((star, index) => {
+        const starIcon = star.querySelector('.star-icon') as SVGElement;
+        if (starIcon) {
+          const starValue = index + 1;
+          if ((hoverRating || currentRating) >= starValue) {
+            starIcon.classList.add('fill-yellow-400', 'text-yellow-400');
+            starIcon.classList.remove('text-gray-300', 'dark:text-gray-600');
+          } else {
+            starIcon.classList.remove('fill-yellow-400', 'text-yellow-400');
+            starIcon.classList.add('text-gray-300', 'dark:text-gray-600');
+          }
+        }
+      });
+    }
+    
+    // Clean up function
     return () => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
+      if (container) {
+        container.innerHTML = '';
       }
     };
   }, [onChange, initialRating]);
