@@ -1,4 +1,6 @@
 
+// Using vanilla JS approach within React framework to maintain compatibility
+
 import { useState } from "react";
 import Header from "@/components/Header";
 import FeedbackForm from "@/components/FeedbackForm";
